@@ -2,10 +2,12 @@ package org.delta;
 
 import com.google.gson.Gson;
 import org.delta.account.*;
+import org.delta.account.serialization.AccountJsonSerializationFactory;
+import org.delta.account.serialization.AccountJsonSerializationObject;
 import org.delta.action.ActionListener;
 import org.delta.action.HelpAction;
 import org.delta.card.CardCreatorService;
-import org.delta.card.CardPrinterService;
+import org.delta.io.IO;
 import org.delta.menu.Menu;
 import org.delta.menu.MenuChoices;
 import org.delta.person.Person;
@@ -13,6 +15,7 @@ import org.delta.person.PersonFactory;
 import org.delta.account.AccountType;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 public class Bank {
 
@@ -40,6 +43,8 @@ public class Bank {
     @Inject
     private AccountService accountService;
 
+    @Inject
+    private AccountJsonSerializationFactory accountJsonSerializationFactory;
 
 
     public void registerActions() {
@@ -97,23 +102,23 @@ public class Bank {
         this.cardCreatorService.createCardAndSetIntoAccount(accountOne);
         this.accountInfoPrinterService.printAccountInfo(accountOne);
 
-
+        AccountJsonSerializationObject jsonAcc = accountJsonSerializationFactory.createFromBaseAccount(accountOne);
 
         Gson gson = new Gson();
-        String json = gson.toJson(owner);
+        String json = gson.toJson(jsonAcc);
 
-        System.out.println(json);
-
-        /*try {
+        try {
             IO.writeFile("accounts.json", json);
 
             String jsonFile = IO.readFile("accounts.json");
             System.out.println(jsonFile);
 
-            BaseAccount readAccount = gson.fromJson(jsonFile, BaseAccount.class);
-            readAccount.printBalance();
+            AccountJsonSerializationObject readAccount = gson.fromJson(jsonFile, AccountJsonSerializationObject.class);
+            BaseAccount account = accountFactory.createFromJsonSerializationObject(readAccount);
+            this.accountInfoPrinterService.printAccountInfo(account);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 }

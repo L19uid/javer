@@ -1,6 +1,6 @@
 package org.delta.account;
 
-import org.delta.card.BaseCard;
+import org.delta.account.serialization.AccountJsonSerializationObject;
 import org.delta.person.Person;
 
 import javax.inject.Inject;

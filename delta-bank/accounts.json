@@ -1,1 +1,1 @@
-{"owner":{"firstName":"Tomas","lastName":"Pesek"},"balance":500.0}
+{"accountNumber":"3212-1119-866-6194","owner":{"firstName":"Tomas","lastName":"Pesek"},"balance":495.0,"accountType":"BASE","cards":[{"cardNumber":"572-785-810-310","expiration":"2027/9","cvc":"420"}]}
