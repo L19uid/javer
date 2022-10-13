@@ -7,12 +7,13 @@ import org.delta.account.serialization.AccountJsonSerializationObject;
 import org.delta.action.ActionListener;
 import org.delta.action.HelpAction;
 import org.delta.card.CardCreatorService;
-import org.delta.io.IO;
 import org.delta.menu.Menu;
 import org.delta.menu.MenuChoices;
 import org.delta.person.Person;
 import org.delta.person.PersonFactory;
 import org.delta.account.AccountType;
+import org.delta.storage.FileSystemStorage;
+import org.delta.storage.JsonSerializationService;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -46,6 +47,13 @@ public class Bank {
     @Inject
     private AccountJsonSerializationFactory accountJsonSerializationFactory;
 
+    @Inject
+    private FileSystemStorage fileSystemStorage;
+
+    @Inject
+    private JsonSerializationService jsonSerializationService;
+
+
 
     public void registerActions() {
         this.actionListener.registerAction(MenuChoices.HELP, new HelpAction());
@@ -73,9 +81,29 @@ public class Bank {
         }
     }
 
+    public void StartTerminal()
+    {
+        System.out.println("Hello from bank application!");
+
+        Menu menu = new Menu();
+        menu.printMenu();
+
+        while (true) {
+            MenuChoices choice = menu.read();
+
+            System.out.println("choice : " + choice);
+
+            if (choice == MenuChoices.EXIT) {
+                break;
+            }
+
+            this.actionListener.processAction(choice);
+        }
+    }
+
     public void example() {
 
-        Person owner = this.personFactory.createPerson("Tomas", "Pesek");
+        Person owner = this.personFactory.createPerson("Tomas", "Pesek", "22");
 
         BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
         BaseAccount accountTwo = this.accountService.createAccount(AccountType.STUDENT,owner, 5000);
@@ -104,21 +132,15 @@ public class Bank {
 
         AccountJsonSerializationObject jsonAcc = accountJsonSerializationFactory.createFromBaseAccount(accountOne);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(jsonAcc);
+        String json = jsonSerializationService.serialize(jsonAcc);
 
-        try {
-            IO.writeFile("accounts.json", json);
+        fileSystemStorage.save(json,"account.json");
+        String jsonFile = fileSystemStorage.read("account.json");
 
-            String jsonFile = IO.readFile("accounts.json");
-            System.out.println(jsonFile);
+        AccountJsonSerializationObject readAccount = jsonSerializationService.deserialize(jsonFile, AccountJsonSerializationObject.class);
+        BaseAccount account = accountFactory.createFactoryFromJsonSerializationObject(readAccount);
+        accountFactory.addAccount(account);
 
-            AccountJsonSerializationObject readAccount = gson.fromJson(jsonFile, AccountJsonSerializationObject.class);
-            BaseAccount account = accountFactory.createFromJsonSerializationObject(readAccount);
-            this.accountInfoPrinterService.printAccountInfo(account);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.accountInfoPrinterService.printAccountInfo(account);
     }
 }

@@ -4,9 +4,8 @@ import org.delta.account.serialization.AccountJsonSerializationObject;
 import org.delta.person.Person;
 
 import javax.inject.Inject;
-import java.util.LinkedList;
-import java.util.List;
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class AccountService {
     @Inject
@@ -15,8 +14,7 @@ public class AccountService {
     @Inject
     private AccountNumberGeneratorService accountNGS;
 
-
-    private final List<BaseAccount> accounts = new LinkedList<>();
+    private final Map<String,BaseAccount> accounts = new HashMap<>();
 
     public BaseAccount createAccount(AccountType accountType, Person person, float balance) {
         String accountNumber = this.accountNGS.generateAccountNumber();
@@ -33,28 +31,15 @@ public class AccountService {
         return null;
     }
 
-    public void addAccounts(BaseAccount account)
-    {
-        this.accounts.add(account);
+    public void addAccount(BaseAccount account) {
+        accounts.put(account.getAccountNumber(),account);
     }
 
-    public BaseAccount findAccount(String accountNumber)
-    {
-        for (BaseAccount account:this.accounts)
-        {
-            if(account.getAccountNumber() == accountNumber)
-                return account;
-        }
-        return null;
+    public BaseAccount getAccountByNumber(String accountNumber) {
+        return accounts.get(accountNumber);
     }
 
-    public BaseAccount[] getAccounts()
-    {
-        return this.accounts.toArray(new BaseAccount[0]);
-    }
-
-    public List getAccountList()
-    {
-        return this.accounts;
+    public BaseAccount[] getAccounts() {
+        return accounts.values().toArray(new BaseAccount[0]);
     }
 }

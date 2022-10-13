@@ -6,9 +6,12 @@ public class Person {
 
     private String lastName;
 
-    public Person(String firstName, String lastName) {
+    private String ID;
+
+    public Person(String firstName, String lastName, String ID ){
         this.firstName = firstName;
         this.lastName = lastName;
+        this.ID = ID;
     }
 
     public String getFirstName() {
@@ -21,5 +24,9 @@ public class Person {
 
     public String getFullName() {
         return this.firstName + " " + this.lastName;
+    }
+
+    public String getID() {
+        return ID;
     }
 }
