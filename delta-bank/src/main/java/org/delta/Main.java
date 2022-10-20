@@ -12,7 +12,7 @@ public class Main {
         Injector injector = Guice.createInjector(new BankInjector());
 
         Bank bank = injector.getInstance(Bank.class);
-        bank.example();
+        bank.StartTerminal();
 
         //Bank bank = new Bank();
         //bank.startTerminal();

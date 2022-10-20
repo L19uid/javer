@@ -23,6 +23,15 @@ public class PersonService {
         return persons.get(personId);
     }
 
+    public Person findPersonByName(String firstName, String lastName) {
+        for (Person person : persons.values()) {
+            if (person.getFirstName().equals(firstName) && person.getLastName().equals(lastName)) {
+                return person;
+            }
+        }
+        return null;
+    }
+
     public Person[] getAllPersons() {
         return persons.values().toArray(new Person[0]);
     }

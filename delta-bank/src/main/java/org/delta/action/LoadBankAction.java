@@ -1,19 +1,30 @@
 package org.delta.action;
 
-public class LoadBankAction {
-    private String bankName;
-    private String bankPath;
 
-    public LoadBankAction(String bankName, String bankPath) {
-        this.bankName = bankName;
-        this.bankPath = bankPath;
-    }
+import org.delta.account.BaseAccount;
+import org.delta.storage.JsonSerializationService;
+import org.delta.storage.StringSerializationService;
 
-    public String getBankName() {
-        return bankName;
-    }
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-    public String getBankPath() {
-        return bankPath;
+
+@Singleton
+public class LoadBankAction implements Action {
+    @Inject
+    private StringSerializationService jsonSerializationService;
+
+
+    String path = "";
+    String name = "account.json";
+
+
+    @Override
+    public void processAction() {
+        try {
+            this.jsonSerializationService.deserializeAccount(name);
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid bank name/Path supplied");
+        }
     }
 }

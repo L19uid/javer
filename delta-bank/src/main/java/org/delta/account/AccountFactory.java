@@ -51,4 +51,8 @@ public class AccountFactory {
     public void addAccount(BaseAccount account) {
         accounts.add(account);
     }
+
+    public List<BaseAccount> getAccounts() {
+        return accounts;
+    }
 }

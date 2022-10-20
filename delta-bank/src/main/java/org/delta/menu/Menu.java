@@ -16,13 +16,11 @@ public class Menu {
             int menuInput = scanner.nextInt();
             System.out.println("Your choice: " + menuInput);
 
-            //return MenuChoices.convertFromMenuInput(menuInput);
+            return MenuChoices.convertFromMenuInput(menuInput);
         } catch (Exception exception) {
             System.out.println("Input is not valid");
 
             return MenuChoices.INVALID_CHOICE;
         }
-
-        return MenuChoices.CREDIT;
     }
 }
