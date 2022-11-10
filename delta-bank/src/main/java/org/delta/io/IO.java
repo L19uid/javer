@@ -18,5 +18,4 @@ public class IO {
         Path filePath = Path.of(fileName);
         return Files.readString(filePath);
     }
-
 }

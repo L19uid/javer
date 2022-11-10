@@ -18,7 +18,7 @@ public class AccountService {
 
     public BaseAccount createAccount(AccountType accountType, Person person, float balance) {
         String accountNumber = this.accountNGS.generateAccountNumber();
-
+        emailAccount();
         switch (accountType)
         {
             case BASE:
@@ -28,7 +28,15 @@ public class AccountService {
             case SAVING:
                 return this.accountFactory.createSavingAccount(accountNumber,person,balance);
         }
+
         return null;
+    }
+
+    private void emailAccount() {
+        AccountEmailSubject accountEmailSubject = new AccountEmailSubject();
+        accountEmailSubject.addObserver(new AccountEmailObserverUser());
+        accountEmailSubject.addObserver(new AccountEmailObserverCEO());
+        accountEmailSubject.notifyObservers();
     }
 
     public void addAccount(BaseAccount account) {
