@@ -3,6 +3,10 @@ package org.delta;
 import org.delta.account.*;
 import org.delta.account.serialization.AccountJsonSerializationFactory;
 import org.delta.action.ActionProcessService;
+import org.delta.atm.Atm;
+import org.delta.atm.AtmFactory;
+import org.delta.atm.AtmInfoPrinterService;
+import org.delta.atm.AtmService;
 import org.delta.card.CardCreatorService;
 import org.delta.menu.Menu;
 import org.delta.menu.MenuChoices;
@@ -51,6 +55,22 @@ public class Bank {
     @Inject
     private QuartzScheduler quartzScheduler;
 
+    @Inject
+    private AtmFactory atmFactory;
+    @Inject
+    private AtmService atmService;
+
+    public void AtmTest()
+    {
+        Person owner = this.personFactory.createPerson("Tomas", "Pesek", "22");
+        BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
+        this.cardCreatorService.createCardAndSetIntoAccount(accountOne);
+
+        atmService.atms.add(atmFactory.createAtm());
+        atmService.withdraw(atmService.atms.get(0),accountOne.getCards().get(0),100);
+        atmService.Balance(atmService.atms.get(0),accountOne.getCards().get(0));
+    }
+
     public void StartTerminal()
     {
         System.out.println("Hello from bank application!");
@@ -58,8 +78,6 @@ public class Bank {
         Person owner = this.personFactory.createPerson("Tomas", "Pesek", "22");
 
         BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
-        BaseAccount accountTwo = this.accountService.createAccount(AccountType.STUDENT,owner, 5000);
-        BaseAccount accountThree = this.accountService.createAccount(AccountType.SAVING,owner, 10000);
 
         this.quartzScheduler.registerJobs();
 

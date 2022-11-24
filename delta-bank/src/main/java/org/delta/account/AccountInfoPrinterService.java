@@ -25,5 +25,4 @@ public class AccountInfoPrinterService {
 
         return "[Base] ";
     }
-
 }

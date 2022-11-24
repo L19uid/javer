@@ -15,12 +15,13 @@ public class Main {
 
     public static void main(String[] args) {
         Injector injector = Guice.createInjector(new BankInjector());
-
+//
         Bank bank = injector.getInstance(Bank.class);
+//
+        //injector.getInstance(NotifyCustomerEventListener.class);
 
-        injector.getInstance(NotifyCustomerEventListener.class);
-
-        bank.StartTerminal();
+        bank.AtmTest();
+        //bank.StartTerminal();
 
         //Bank bank = new Bank();
         //bank.startTerminal();
