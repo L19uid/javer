@@ -1,6 +1,9 @@
 package org.delta.account;
 
+import com.google.common.eventbus.EventBus;
 import org.delta.account.serialization.AccountJsonSerializationObject;
+import org.delta.notification.persons.NotificationData;
+import org.delta.notification.persons.NotifyCustomerEvent;
 import org.delta.person.Person;
 
 import javax.inject.Inject;
@@ -12,13 +15,16 @@ public class AccountService {
     private AccountFactory accountFactory;
 
     @Inject
+    EventBus eventBus;
+
+    @Inject
     private AccountNumberGeneratorService accountNGS;
 
     private final Map<String,BaseAccount> accounts = new HashMap<>();
 
     public BaseAccount createAccount(AccountType accountType, Person person, float balance) {
         String accountNumber = this.accountNGS.generateAccountNumber();
-        emailAccount();
+        emailAccount(accountNumber, person);
         switch (accountType)
         {
             case BASE:
@@ -32,11 +38,13 @@ public class AccountService {
         return null;
     }
 
-    private void emailAccount() {
+    private void emailAccount(String accountNumber, Person person) {
+        eventBus.post(new NotifyCustomerEvent(new NotificationData(accountNumber, person.getFullName())));
         AccountEmailSubject accountEmailSubject = new AccountEmailSubject();
         accountEmailSubject.addObserver(new AccountEmailObserverUser());
         accountEmailSubject.addObserver(new AccountEmailObserverCEO());
         accountEmailSubject.notifyObservers();
+        accountEmailSubject.removeObservers();
     }
 
     public void addAccount(BaseAccount account) {

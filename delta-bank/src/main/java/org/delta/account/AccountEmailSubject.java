@@ -20,4 +20,8 @@ public class AccountEmailSubject implements Subject {
     public void removeObserver(Observer o) {
         observers.remove(o);
     }
+
+    public void removeObservers() {
+        observers.clear();
+    }
 }

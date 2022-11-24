@@ -6,6 +6,7 @@ import org.delta.action.ActionProcessService;
 import org.delta.card.CardCreatorService;
 import org.delta.menu.Menu;
 import org.delta.menu.MenuChoices;
+import org.delta.person.Person;
 import org.delta.person.PersonFactory;
 import org.delta.storage.FileSystemStorage;
 import org.delta.storage.JsonSerializationService;
@@ -47,9 +48,20 @@ public class Bank {
     @Inject
     private JsonSerializationService jsonSerializationService;
 
+    @Inject
+    private QuartzScheduler quartzScheduler;
+
     public void StartTerminal()
     {
         System.out.println("Hello from bank application!");
+
+        Person owner = this.personFactory.createPerson("Tomas", "Pesek", "22");
+
+        BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
+        BaseAccount accountTwo = this.accountService.createAccount(AccountType.STUDENT,owner, 5000);
+        BaseAccount accountThree = this.accountService.createAccount(AccountType.SAVING,owner, 10000);
+
+        this.quartzScheduler.registerJobs();
 
         Menu menu = new Menu();
         menu.printMenu();
@@ -71,11 +83,7 @@ public class Bank {
         //Scanner scanner = new Scanner(new InputStreamReader(System.in));
         //String input = scanner.next();
 //
-        //Person owner = this.personFactory.createPerson("Tomas", "Pesek", "22");
-//
-        //BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
-        //BaseAccount accountTwo = this.accountService.createAccount(AccountType.STUDENT,owner, 5000);
-        //BaseAccount accountThree = this.accountService.createAccount(AccountType.SAVING,owner, 10000);
+
 //
         //this.accountInfoPrinterService.printAccountInfo(accountOne);
         //this.accountInfoPrinterService.printAccountInfo(accountTwo);

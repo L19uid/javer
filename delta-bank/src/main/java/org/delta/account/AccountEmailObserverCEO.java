@@ -6,7 +6,6 @@ import org.delta.observer.Subject;
 public class AccountEmailObserverCEO implements Observer {
     @Override
     public void update(Subject content) {
-        BaseAccount account = (BaseAccount) content;
-        System.out.println("Sending email to CEO about account " + account.getAccountNumber());
+        System.out.println("Sending email to CEO about account " + content);
     }
 }
