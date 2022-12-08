@@ -13,7 +13,10 @@ public class AccountNumberGeneratorService {
 
         for (int i = 0; i < 4; i++)
         {
-            sb.append(random.nextInt(9999));
+            for(int j = 0; j < 3; j++)
+            {
+                sb.append(random.nextInt(9));
+            }
             if(i<3) sb.append("-");
         }
 

@@ -68,7 +68,7 @@ public class Bank {
 
         atmService.atms.add(atmFactory.createAtm());
         atmService.withdraw(atmService.atms.get(0),accountOne.getCards().get(0),100);
-        atmService.Balance(atmService.atms.get(0),accountOne.getCards().get(0));
+        atmService.Balance(accountOne.getCards().get(0));
     }
 
     public void StartTerminal()

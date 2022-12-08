@@ -41,7 +41,7 @@ public class CardDataGeneratorService {
         int year = c.get(Calendar.YEAR) + 5;
         int month = c.get(Calendar.MONTH);
 
-        sb.append(year + "/" + month);
+        sb.append(year-2000 + "/" + month);
 
         return sb.toString();
     }

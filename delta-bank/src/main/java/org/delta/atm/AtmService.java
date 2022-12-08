@@ -24,7 +24,7 @@ public class AtmService {
             atmInfoPrinterService.atmFailedWithdraw(card.getBaseAccount(),amount);
         }
     }
-    public void Balance(Atm atm, BaseCard card) {
+    public void Balance(BaseCard card) {
         atmInfoPrinterService.atmBalance(card.getBaseAccount());
     }
 }

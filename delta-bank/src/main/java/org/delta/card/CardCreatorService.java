@@ -12,7 +12,7 @@ public class CardCreatorService {
     private CardFactory cardFactory;
 
     @Inject
-    private CardDataGeneratorService CardDGS;
+    public CardDataGeneratorService CardDGS;
 
     public void createCardAndSetIntoAccount(BaseAccount baseAccount) {
 
