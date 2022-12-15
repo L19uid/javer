@@ -3,6 +3,8 @@ package org.delta.account;
 import org.delta.account.serialization.AccountJsonSerializationObject;
 import org.delta.card.serialization.CardSerializationObject;
 import org.delta.card.serialization.CardSerializationObjectFactory;
+import org.delta.card.serialization.CreditCardSerializationFactory;
+import org.delta.card.serialization.CreditCardSerializationObject;
 import org.delta.person.Person;
 import org.delta.person.PersonFactory;
 import java.util.List;
@@ -18,6 +20,9 @@ public class AccountFactory {
 
     @Inject
     private CardSerializationObjectFactory cardSerializationObjectFactory;
+
+    @Inject
+    private CreditCardSerializationFactory creditCardSerializationFactory;
 
     private List<BaseAccount> accounts = new LinkedList<>();
 
@@ -37,6 +42,9 @@ public class AccountFactory {
         BaseAccount account = createBaseAccount(accountJsonSerializationObject.accountNumber, person, accountJsonSerializationObject.balance);
         for (CardSerializationObject cardSerializationObject : accountJsonSerializationObject.cards) {
             account.addCard(cardSerializationObjectFactory.createFromJsonSerializationObject(cardSerializationObject,account));
+        }
+        for (CreditCardSerializationObject cardSerializationObject : accountJsonSerializationObject.creditCards) {
+            account.addCard(creditCardSerializationFactory.createFromJsonSerializationObject(cardSerializationObject,account));
         }
         return account;
     }

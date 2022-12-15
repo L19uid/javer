@@ -3,13 +3,10 @@ package org.delta.card;
 import org.delta.account.BaseAccount;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
-public class CardCreatorService {
-
+public class CreditCardCreatorService {
     @Inject
-    private CardFactory cardFactory;
+    private CreditCardFactory creditCardFactory;
 
     @Inject
     public CardDataGeneratorService CardDGS;
@@ -20,7 +17,7 @@ public class CardCreatorService {
         String expiration = this.CardDGS.generateExpirationDate();
         String cvc = this.CardDGS.generateCVC();
 
-        BaseCard card = this.cardFactory.createBaseCard(baseAccount, cardNumber, expiration, cvc);
-        baseAccount.addCard(card);
+        CreditCard card = this.creditCardFactory.createCreditCard(baseAccount, cardNumber, expiration, cvc);
+        baseAccount.addCreditCard(card);
     }
 }

@@ -1,6 +1,10 @@
 package org.delta.account;
 
+import com.google.inject.Inject;
 import org.delta.card.BaseCard;
+import org.delta.card.CreditCard;
+import org.delta.card.CreditCardFactory;
+import org.delta.card.CreditCardService;
 import org.delta.person.Person;
 
 import java.util.LinkedList;
@@ -29,6 +33,8 @@ import java.util.List;
 
 public class BaseAccount {
 
+
+
     private Person owner;
 
     private float balance;
@@ -36,6 +42,7 @@ public class BaseAccount {
     private String accountNumber;
 
     private List<BaseCard> cards = new LinkedList<>();
+    private List<CreditCard> creditCards = new LinkedList<>();
 
     public BaseAccount(String accountNumber, Person owner, float balance) {
         this.owner = owner;
@@ -62,14 +69,24 @@ public class BaseAccount {
     public void addCard(BaseCard card) {
         this.cards.add(card);
     }
+    public void addCreditCard(CreditCard card) {
+        this.creditCards.add(card);
+    }
 
     public int getCardCount() {
         return this.cards.size();
+    }
+    public int getCreditCardCount() {
+        return this.creditCards.size();
     }
 
     public List<BaseCard> getCards() {
         return cards;
     }
+    public List<CreditCard> getCreditCards() {
+        return creditCards;
+    }
 
     public String getAccountNumber(){return accountNumber;}
+
 }

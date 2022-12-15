@@ -8,6 +8,7 @@ import org.delta.atm.AtmFactory;
 import org.delta.atm.AtmInfoPrinterService;
 import org.delta.atm.AtmService;
 import org.delta.card.CardCreatorService;
+import org.delta.card.CreditCardCreatorService;
 import org.delta.menu.Menu;
 import org.delta.menu.MenuChoices;
 import org.delta.person.Person;
@@ -41,6 +42,9 @@ public class Bank {
     private CardCreatorService cardCreatorService;
 
     @Inject
+    private CreditCardCreatorService creditCardCreatorService;
+
+    @Inject
     private AccountService accountService;
 
     @Inject
@@ -65,9 +69,11 @@ public class Bank {
         Person owner = this.personFactory.createPerson("Tomas", "Pesek", "22");
         BaseAccount accountOne = this.accountService.createAccount(AccountType.BASE, owner, 1000);
         this.cardCreatorService.createCardAndSetIntoAccount(accountOne);
+        this.creditCardCreatorService.createCardAndSetIntoAccount(accountOne);
 
         atmService.atms.add(atmFactory.createAtm());
         atmService.withdraw(atmService.atms.get(0),accountOne.getCards().get(0),100);
+        atmService.whithdrawCredit(atmService.atms.get(0),accountOne.getCreditCards().get(0),100);
         atmService.Balance(accountOne.getCards().get(0));
     }
 

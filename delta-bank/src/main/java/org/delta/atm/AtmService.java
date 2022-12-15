@@ -1,6 +1,7 @@
 package org.delta.atm;
 
 import org.delta.card.BaseCard;
+import org.delta.card.CreditCard;
 
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -26,5 +27,14 @@ public class AtmService {
     }
     public void Balance(BaseCard card) {
         atmInfoPrinterService.atmBalance(card.getBaseAccount());
+    }
+
+    public void whithdrawCredit(Atm atm, CreditCard card, int amount) {
+        if(card.getBaseAccount().getBalance() >= amount) {
+            atm.withdrawCredit(card,amount);
+        }
+        else {
+            atmInfoPrinterService.atmFailedWithdraw(card.getBaseAccount(),amount);
+        }
     }
 }
